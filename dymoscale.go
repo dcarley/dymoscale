@@ -2,7 +2,6 @@ package dymoscale
 
 import (
 	"fmt"
-	"io"
 
 	"github.com/kylelemons/gousb/usb"
 )
@@ -70,7 +69,7 @@ func NewScale() (*Scale, error) {
 // ReadRaw gets a raw reading from the scale.
 func (s *Scale) ReadRaw() ([]byte, error) {
 	buf := make([]byte, s.endpoint.Info().MaxPacketSize)
-	_, err := io.ReadFull(s.endpoint, buf)
+	_, err := s.endpoint.Read(buf)
 
 	return buf, err
 }
