@@ -3,7 +3,7 @@ package dymoscale
 import (
 	"fmt"
 
-	"github.com/kylelemons/gousb/usb"
+	"github.com/dcarley/gousb/usb"
 )
 
 const VendorID usb.ID = 0x0922 // Dymo, all devices

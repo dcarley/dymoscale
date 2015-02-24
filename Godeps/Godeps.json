@@ -3,8 +3,9 @@
 	"GoVersion": "go1.4.1",
 	"Deps": [
 		{
-			"ImportPath": "github.com/kylelemons/gousb/usb",
-			"Rev": "b8ca4aadc7228a359fccd8ae4394eefcce29e7a8"
+			"ImportPath": "github.com/dcarley/gousb/usb",
+			"Comment": "yokujin_fork",
+			"Rev": "23810395649be2a74c850e8a06ee397128d77f86"
 		}
 	]
 }
