@@ -150,13 +150,24 @@ func (s *Scale) ReadRaw() ([]byte, error) {
 	buf := make([]byte, s.endpoint.Info().MaxPacketSize)
 	_, err := s.endpoint.Read(buf)
 
+	// TODO: Rate limit? Log?
+	if err == usb.ERROR_PIPE || err == usb.ERROR_TIMEOUT {
+		s.device.Reset()
+	}
+
 	return buf, err
 }
 
 // ReadMeasurement returns a parsed Measurement from the scale.
 func (s *Scale) ReadMeasurement() (Measurementer, error) {
-	// TODO: Reset on libusb errors here?
-	return ReadMeasurement(s.endpoint)
+	res, err := ReadMeasurement(s.endpoint)
+
+	// TODO: Rate limit? Log?
+	if err == usb.ERROR_PIPE || err == usb.ERROR_TIMEOUT {
+		s.device.Reset()
+	}
+
+	return res, err
 }
 
 // ReadGrams returns a reading from the scale in grams.
