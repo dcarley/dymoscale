@@ -10,14 +10,29 @@ import (
 
 const VendorID usb.ID = 0x0922 // Dymo, all devices
 
+type Mode int8
+
+const (
+	Grams  Mode = 2
+	Ounces Mode = 11
+)
+
+type Stability int8
+
+const (
+	NoWeight  Stability = 2
+	NeedsTare Stability = 5
+	Stable    Stability = 4
+)
+
 // Measurement represents a parsed reading from the scale.
 type Measurement struct {
-	AlwaysThree int8  // Don't know what this is but it's always 3
-	Stability   int8  // How accurate the measurement was
-	Mode        int8  // Grams or Ounces
-	ScaleFactor int8  // WeightMinor*10^n when Mode is Ounces
-	WeightMinor uint8 //
-	WeightMajor uint8 // Overflow for WeightMinor, n*256
+	AlwaysThree int8      // Don't know what this is but it's always 3
+	Stability   Stability // How accurate the measurement was
+	Mode        Mode      // Grams or Ounces
+	ScaleFactor int8      // WeightMinor*10^n when Mode is Ounces
+	WeightMinor uint8     //
+	WeightMajor uint8     // Overflow for WeightMinor, n*256
 }
 
 type Scale struct {

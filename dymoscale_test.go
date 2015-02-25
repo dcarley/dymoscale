@@ -24,8 +24,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   2,
-				Mode:        11,
+				Stability:   NoWeight,
+				Mode:        Ounces,
 				ScaleFactor: -1,
 				WeightMinor: 0,
 				WeightMajor: 0,
@@ -39,8 +39,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   5,
-				Mode:        11,
+				Stability:   NeedsTare,
+				Mode:        Ounces,
 				ScaleFactor: -1,
 				WeightMinor: 0,
 				WeightMajor: 0,
@@ -54,8 +54,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   4,
-				Mode:        2,
+				Stability:   Stable,
+				Mode:        Grams,
 				ScaleFactor: 0,
 				WeightMinor: 136,
 				WeightMajor: 0,
@@ -69,8 +69,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   4,
-				Mode:        11,
+				Stability:   Stable,
+				Mode:        Ounces,
 				ScaleFactor: -1,
 				WeightMinor: 48,
 				WeightMajor: 0,
@@ -84,8 +84,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   4,
-				Mode:        2,
+				Stability:   Stable,
+				Mode:        Grams,
 				ScaleFactor: 0,
 				WeightMinor: 162,
 				WeightMajor: 1,
@@ -99,8 +99,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   4,
-				Mode:        11,
+				Stability:   Stable,
+				Mode:        Ounces,
 				ScaleFactor: -1,
 				WeightMinor: 147,
 				WeightMajor: 0,
@@ -114,8 +114,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   4,
-				Mode:        2,
+				Stability:   Stable,
+				Mode:        Grams,
 				ScaleFactor: 0,
 				WeightMinor: 104,
 				WeightMajor: 5,
@@ -129,8 +129,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   4,
-				Mode:        11,
+				Stability:   Stable,
+				Mode:        Ounces,
 				ScaleFactor: -1,
 				WeightMinor: 232,
 				WeightMajor: 1,
@@ -144,8 +144,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   4,
-				Mode:        2,
+				Stability:   Stable,
+				Mode:        Grams,
 				ScaleFactor: 0,
 				WeightMinor: 188,
 				WeightMajor: 9,
@@ -159,8 +159,8 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(BeNil())
 			Expect(reading).To(Equal(Measurement{
 				AlwaysThree: 3,
-				Stability:   4,
-				Mode:        11,
+				Stability:   Stable,
+				Mode:        Ounces,
 				ScaleFactor: -1,
 				WeightMinor: 111,
 				WeightMajor: 3,
