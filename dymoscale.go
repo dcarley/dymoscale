@@ -74,8 +74,14 @@ func (s *Scale) ReadRaw() ([]byte, error) {
 	return buf, err
 }
 
-// Close closes the USB device and context.
-func (s *Scale) Close() {
-	s.device.Close()
-	s.context.Close()
+// Close closes the USB device and context. If there are any errors then the
+// inner-most is returned, but both will still attempt to be closed.
+func (s *Scale) Close() error {
+	errDev := s.device.Close()
+	errCtx := s.context.Close()
+
+	if errDev != nil {
+		return errDev
+	}
+	return errCtx
 }
