@@ -1,12 +1,24 @@
 package dymoscale
 
 import (
+	"encoding/binary"
 	"fmt"
+	"io"
 
 	"github.com/dcarley/gousb/usb"
 )
 
 const VendorID usb.ID = 0x0922 // Dymo, all devices
+
+// Measurement represents a parsed reading from the scale.
+type Measurement struct {
+	AlwaysThree int8  // Don't know what this is but it's always 3
+	Stability   int8  // How accurate the measurement was
+	Mode        int8  // Grams or Ounces
+	ScaleFactor int8  // WeightMinor*10^n when Mode is Ounces
+	WeightMinor uint8 //
+	WeightMajor uint8 // Overflow for WeightMinor, n*256
+}
 
 type Scale struct {
 	context  *usb.Context
@@ -23,6 +35,14 @@ func closeWithError(context *usb.Context, devices []*usb.Device, err error) (*Sc
 	context.Close()
 
 	return nil, err
+}
+
+// ReadMeasurement obtains a Measurement from an io.Reader.
+func ReadMeasurement(reader io.Reader) (Measurement, error) {
+	var reading Measurement
+	err := binary.Read(reader, binary.LittleEndian, &reading)
+
+	return reading, err
 }
 
 // NewScale opens a connection to a Dymo USB scale. You MUST call Close()
@@ -72,6 +92,12 @@ func (s *Scale) ReadRaw() ([]byte, error) {
 	_, err := s.endpoint.Read(buf)
 
 	return buf, err
+}
+
+// ReadMeasurement returns a parsed Measurement from the scale.
+func (s *Scale) ReadMeasurement() (Measurement, error) {
+	// TODO: Reset on libusb errors here?
+	return ReadMeasurement(s.endpoint)
 }
 
 // Close closes the USB device and context. If there are any errors then the
