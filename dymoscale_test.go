@@ -14,7 +14,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(MatchError("unexpected EOF"))
-			Expect(reading).To(Equal(Measurement{0, 0, 0, 0, 0, 0}))
+			Expect(reading).To(Equal(&Measurement{0, 0, 0, 0, 0, 0}))
 
 			grams, err := reading.Grams()
 			Expect(err).To(MatchError(ErrInvalidRead))
@@ -26,7 +26,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   NoWeight,
 				Mode:        Ounces,
@@ -45,7 +45,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   NeedsTare,
 				Mode:        Ounces,
@@ -64,7 +64,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   Stable,
 				Mode:        Grams,
@@ -83,7 +83,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   Stable,
 				Mode:        Ounces,
@@ -102,7 +102,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   Stable,
 				Mode:        Grams,
@@ -121,7 +121,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   Stable,
 				Mode:        Ounces,
@@ -140,7 +140,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   Stable,
 				Mode:        Grams,
@@ -159,7 +159,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   Stable,
 				Mode:        Ounces,
@@ -178,7 +178,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   Stable,
 				Mode:        Grams,
@@ -197,7 +197,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   Stable,
 				Mode:        Ounces,
@@ -216,7 +216,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   4,
 				Mode:        2,
@@ -235,7 +235,7 @@ var _ = Describe("Dymoscale", func() {
 
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(Measurement{
+			Expect(reading).To(Equal(&Measurement{
 				AlwaysThree: 3,
 				Stability:   4,
 				Mode:        11,

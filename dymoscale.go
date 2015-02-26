@@ -31,6 +31,10 @@ const (
 	Stable    Stability = 4
 )
 
+type Measurementer interface {
+	Grams() (int, error)
+}
+
 // Measurement represents a parsed reading from the scale.
 type Measurement struct {
 	AlwaysThree int8      // Don't know what this is but it's always 3
@@ -68,6 +72,12 @@ func (m *Measurement) Grams() (int, error) {
 	return grams, nil
 }
 
+type Scaler interface {
+	ReadRaw() ([]byte, error)
+	ReadMeasurement() (Measurementer, error)
+	Close() error
+}
+
 type Scale struct {
 	context  *usb.Context
 	device   *usb.Device
@@ -76,7 +86,7 @@ type Scale struct {
 
 // closeWithError closes all outstanding devices and the context, then
 // returns the original error.
-func closeWithError(context *usb.Context, devices []*usb.Device, err error) (*Scale, error) {
+func closeWithError(context *usb.Context, devices []*usb.Device, err error) (Scaler, error) {
 	for _, dev := range devices {
 		dev.Close()
 	}
@@ -86,16 +96,16 @@ func closeWithError(context *usb.Context, devices []*usb.Device, err error) (*Sc
 }
 
 // ReadMeasurement obtains a Measurement from an io.Reader.
-func ReadMeasurement(reader io.Reader) (Measurement, error) {
+func ReadMeasurement(reader io.Reader) (Measurementer, error) {
 	var reading Measurement
 	err := binary.Read(reader, binary.LittleEndian, &reading)
 
-	return reading, err
+	return &reading, err
 }
 
 // NewScale opens a connection to a Dymo USB scale. You MUST call Close()
 // when you're finished.
-func NewScale() (*Scale, error) {
+func NewScale() (Scaler, error) {
 	ctx := usb.NewContext()
 
 	devs, err := ctx.ListDevices(func(desc *usb.Descriptor) bool {
@@ -143,7 +153,7 @@ func (s *Scale) ReadRaw() ([]byte, error) {
 }
 
 // ReadMeasurement returns a parsed Measurement from the scale.
-func (s *Scale) ReadMeasurement() (Measurement, error) {
+func (s *Scale) ReadMeasurement() (Measurementer, error) {
 	// TODO: Reset on libusb errors here?
 	return ReadMeasurement(s.endpoint)
 }
