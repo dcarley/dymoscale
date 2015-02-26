@@ -11,6 +11,7 @@ import (
 type MockScale struct {
 	Raw         []byte
 	Measurement dymoscale.Measurementer
+	Grams       int
 	Error       error
 }
 
@@ -19,6 +20,9 @@ func (m *MockScale) ReadRaw() ([]byte, error) {
 }
 func (m *MockScale) ReadMeasurement() (dymoscale.Measurementer, error) {
 	return m.Measurement, m.Error
+}
+func (m *MockScale) ReadGrams() (int, error) {
+	return m.Grams, m.Error
 }
 func (m *MockScale) Close() error {
 	return nil
@@ -58,9 +62,7 @@ var _ = Describe("Dymodump", func() {
 
 			It("should return result as number of grams", func() {
 				scale := &MockScale{
-					Measurement: &MockMeasurement{
-						Result: 23,
-					},
+					Grams: 23,
 				}
 
 				out := getResultOrError(scale, mode)
@@ -70,17 +72,6 @@ var _ = Describe("Dymodump", func() {
 			It("should return scale error", func() {
 				scale := &MockScale{
 					Error: errors.New("something bad"),
-				}
-
-				out := getResultOrError(scale, mode)
-				Expect(out).To(Equal("Error: something bad"))
-			})
-
-			It("should return measurement error", func() {
-				scale := &MockScale{
-					Measurement: &MockMeasurement{
-						Error: errors.New("something bad"),
-					},
 				}
 
 				out := getResultOrError(scale, mode)

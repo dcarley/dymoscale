@@ -57,13 +57,10 @@ func getResultOrError(scale dymoscale.Scaler, mode string) string {
 
 	switch mode {
 	case "grams":
-		var parsed dymoscale.Measurementer
 		var payload int
 
-		if parsed, err = scale.ReadMeasurement(); err == nil {
-			payload, err = parsed.Grams()
-			result = fmt.Sprintf(outputResult, payload)
-		}
+		payload, err = scale.ReadGrams()
+		result = fmt.Sprintf(outputResult, payload)
 	case "parsed":
 		var payload dymoscale.Measurementer
 

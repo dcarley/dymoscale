@@ -75,6 +75,7 @@ func (m *Measurement) Grams() (int, error) {
 type Scaler interface {
 	ReadRaw() ([]byte, error)
 	ReadMeasurement() (Measurementer, error)
+	ReadGrams() (int, error)
 	Close() error
 }
 
@@ -156,6 +157,16 @@ func (s *Scale) ReadRaw() ([]byte, error) {
 func (s *Scale) ReadMeasurement() (Measurementer, error) {
 	// TODO: Reset on libusb errors here?
 	return ReadMeasurement(s.endpoint)
+}
+
+// ReadGrams returns a reading from the scale in grams.
+func (s *Scale) ReadGrams() (int, error) {
+	measurement, err := s.ReadMeasurement()
+	if err != nil {
+		return 0, err
+	}
+
+	return measurement.Grams()
 }
 
 // Close closes the USB device and context. If there are any errors then the
