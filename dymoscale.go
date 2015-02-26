@@ -40,14 +40,23 @@ type Measurement struct {
 	WeightMajor uint8     // Overflow for WeightMinor, n*256
 }
 
-// Grams returns the measurement in grams.
-func (m *Measurement) Grams() (int, error) {
+// errors returns an error if the reading is invalid.
+func (m *Measurement) errors() error {
 	if m.Stability == NeedsTare {
-		return 0, ErrNeedsTare
+		return ErrNeedsTare
 	}
 
 	if m.Mode != Grams && m.Stability != NoWeight {
-		return 0, ErrWrongMode
+		return ErrWrongMode
+	}
+
+	return nil
+}
+
+// Grams returns the measurement in grams.
+func (m *Measurement) Grams() (int, error) {
+	if err := m.errors(); err != nil {
+		return 0, err
 	}
 
 	grams := int(m.WeightMinor) + (int(m.WeightMajor) * 256)
