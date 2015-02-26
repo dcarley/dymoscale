@@ -11,8 +11,9 @@ import (
 const VendorID usb.ID = 0x0922 // Dymo, all devices
 
 var (
-	ErrNeedsTare = fmt.Errorf("scale reads negative, please tare")
-	ErrWrongMode = fmt.Errorf("scale is in ounces mode, please switch to grams")
+	ErrInvalidRead = fmt.Errorf("scale gave invalid reading")
+	ErrNeedsTare   = fmt.Errorf("scale reads negative, please tare")
+	ErrWrongMode   = fmt.Errorf("scale is in ounces mode, please switch to grams")
 )
 
 type Mode int8
@@ -42,6 +43,10 @@ type Measurement struct {
 
 // errors returns an error if the reading is invalid.
 func (m *Measurement) errors() error {
+	if m.AlwaysThree != 3 || m.Stability == 0 || m.Mode == 0 {
+		return ErrInvalidRead
+	}
+
 	if m.Stability == NeedsTare {
 		return ErrNeedsTare
 	}

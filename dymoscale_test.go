@@ -16,10 +16,9 @@ var _ = Describe("Dymoscale", func() {
 			Expect(err).To(MatchError("unexpected EOF"))
 			Expect(reading).To(Equal(Measurement{0, 0, 0, 0, 0, 0}))
 
-			// TODO: What should this return?
-			//grams, err := reading.Grams()
-			//Expect(err).To(MatchError(ErrWrongMode))
-			//Expect(grams).To(Equal(0))
+			grams, err := reading.Grams()
+			Expect(err).To(MatchError(ErrInvalidRead))
+			Expect(grams).To(Equal(0))
 		})
 
 		It("should read zero weight", func() {
