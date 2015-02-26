@@ -15,6 +15,11 @@ var _ = Describe("Dymoscale", func() {
 			reading, err := ReadMeasurement(buf)
 			Expect(err).To(MatchError("unexpected EOF"))
 			Expect(reading).To(Equal(Measurement{0, 0, 0, 0, 0, 0}))
+
+			// TODO: What should this return?
+			//grams, err := reading.Grams()
+			//Expect(err).To(MatchError(ErrWrongMode))
+			//Expect(grams).To(Equal(0))
 		})
 
 		It("should read zero weight", func() {
@@ -30,6 +35,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 0,
 				WeightMajor: 0,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(BeNil())
+			Expect(grams).To(Equal(0))
 		})
 
 		It("should read negative weight (needs tare)", func() {
@@ -45,6 +54,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 0,
 				WeightMajor: 0,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(MatchError(ErrNeedsTare))
+			Expect(grams).To(Equal(0))
 		})
 
 		It("should read 136g object", func() {
@@ -60,6 +73,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 136,
 				WeightMajor: 0,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(BeNil())
+			Expect(grams).To(Equal(136))
 		})
 
 		It("should read 4.8oz object (136g)", func() {
@@ -75,6 +92,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 48,
 				WeightMajor: 0,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(MatchError(ErrWrongMode))
+			Expect(grams).To(Equal(0))
 		})
 
 		It("should read 418g object", func() {
@@ -90,6 +111,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 162,
 				WeightMajor: 1,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(BeNil())
+			Expect(grams).To(Equal(418))
 		})
 
 		It("should read 14.7oz object (418g)", func() {
@@ -105,6 +130,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 147,
 				WeightMajor: 0,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(MatchError(ErrWrongMode))
+			Expect(grams).To(Equal(0))
 		})
 
 		It("should read 1384g object", func() {
@@ -120,6 +149,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 104,
 				WeightMajor: 5,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(BeNil())
+			Expect(grams).To(Equal(1384))
 		})
 
 		It("should read 3lb 0.8oz object (1384g)", func() {
@@ -135,6 +168,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 232,
 				WeightMajor: 1,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(MatchError(ErrWrongMode))
+			Expect(grams).To(Equal(0))
 		})
 
 		It("should read 2492g object", func() {
@@ -150,6 +187,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 188,
 				WeightMajor: 9,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(BeNil())
+			Expect(grams).To(Equal(2492))
 		})
 
 		It("should read 5lb 7.9oz object (2492g)", func() {
@@ -165,6 +206,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 111,
 				WeightMajor: 3,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(MatchError(ErrWrongMode))
+			Expect(grams).To(Equal(0))
 		})
 
 		It("should read 4294g object", func() {
@@ -180,6 +225,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 198,
 				WeightMajor: 16,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(BeNil())
+			Expect(grams).To(Equal(4294))
 		})
 
 		It("should read 9lb 7.5oz object (4294g)", func() {
@@ -195,6 +244,10 @@ var _ = Describe("Dymoscale", func() {
 				WeightMinor: 234,
 				WeightMajor: 5,
 			}))
+
+			grams, err := reading.Grams()
+			Expect(err).To(MatchError(ErrWrongMode))
+			Expect(grams).To(Equal(0))
 		})
 	})
 })

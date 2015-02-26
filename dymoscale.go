@@ -10,6 +10,11 @@ import (
 
 const VendorID usb.ID = 0x0922 // Dymo, all devices
 
+var (
+	ErrNeedsTare = fmt.Errorf("scale reads negative, please tare")
+	ErrWrongMode = fmt.Errorf("scale is in ounces mode, please switch to grams")
+)
+
 type Mode int8
 
 const (
@@ -33,6 +38,20 @@ type Measurement struct {
 	ScaleFactor int8      // WeightMinor*10^n when Mode is Ounces
 	WeightMinor uint8     //
 	WeightMajor uint8     // Overflow for WeightMinor, n*256
+}
+
+// Grams returns the measurement in grams.
+func (m *Measurement) Grams() (int, error) {
+	if m.Stability == NeedsTare {
+		return 0, ErrNeedsTare
+	}
+
+	if m.Mode != Grams && m.Stability != NoWeight {
+		return 0, ErrWrongMode
+	}
+
+	grams := int(m.WeightMinor) + (int(m.WeightMajor) * 256)
+	return grams, nil
 }
 
 type Scale struct {
