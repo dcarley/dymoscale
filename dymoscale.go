@@ -72,17 +72,12 @@ func (m *Measurement) Grams() (int, error) {
 	return grams, nil
 }
 
-type Scaler interface {
-	ReadRaw() ([]byte, error)
-	ReadMeasurement() (Measurementer, error)
-	ReadGrams() (int, error)
-	Close() error
-}
+// ReadMeasurement obtains a Measurement from an io.Reader.
+func ReadMeasurement(reader io.Reader) (Measurementer, error) {
+	var reading Measurement
+	err := binary.Read(reader, binary.LittleEndian, &reading)
 
-type Scale struct {
-	context  *usb.Context
-	device   *usb.Device
-	endpoint usb.Endpoint
+	return &reading, err
 }
 
 // closeWithError closes all outstanding devices and the context, then
@@ -96,12 +91,17 @@ func closeWithError(context *usb.Context, devices []*usb.Device, err error) (Sca
 	return nil, err
 }
 
-// ReadMeasurement obtains a Measurement from an io.Reader.
-func ReadMeasurement(reader io.Reader) (Measurementer, error) {
-	var reading Measurement
-	err := binary.Read(reader, binary.LittleEndian, &reading)
+type Scaler interface {
+	ReadRaw() ([]byte, error)
+	ReadMeasurement() (Measurementer, error)
+	ReadGrams() (int, error)
+	Close() error
+}
 
-	return &reading, err
+type Scale struct {
+	context  *usb.Context
+	device   *usb.Device
+	endpoint usb.Endpoint
 }
 
 // NewScale opens a connection to a Dymo USB scale. You MUST call Close()
