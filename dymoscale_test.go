@@ -7,6 +7,11 @@ import (
 	"bytes"
 )
 
+// OuncesToGramsVariation is the amount of precision we lose when converting
+// from ounces to grams. This is ±28.35*0.1 grams because ounces are only
+// reported to one decimal place.
+const OuncesToGramsVariation = 2
+
 var _ = Describe("Dymoscale", func() {
 	Describe("Measurement", func() {
 		It("should error on short read", func() {
@@ -93,8 +98,8 @@ var _ = Describe("Dymoscale", func() {
 			}))
 
 			grams, err := reading.Grams()
-			Expect(err).To(MatchError(ErrWrongMode))
-			Expect(grams).To(Equal(0))
+			Expect(err).To(BeNil())
+			Expect(grams).To(BeNumerically("~", 136, OuncesToGramsVariation))
 		})
 
 		It("should read 418g object", func() {
@@ -131,8 +136,8 @@ var _ = Describe("Dymoscale", func() {
 			}))
 
 			grams, err := reading.Grams()
-			Expect(err).To(MatchError(ErrWrongMode))
-			Expect(grams).To(Equal(0))
+			Expect(err).To(BeNil())
+			Expect(grams).To(BeNumerically("~", 418, OuncesToGramsVariation))
 		})
 
 		It("should read 1384g object", func() {
@@ -169,8 +174,8 @@ var _ = Describe("Dymoscale", func() {
 			}))
 
 			grams, err := reading.Grams()
-			Expect(err).To(MatchError(ErrWrongMode))
-			Expect(grams).To(Equal(0))
+			Expect(err).To(BeNil())
+			Expect(grams).To(BeNumerically("~", 1384, OuncesToGramsVariation))
 		})
 
 		It("should read 2492g object", func() {
@@ -207,8 +212,8 @@ var _ = Describe("Dymoscale", func() {
 			}))
 
 			grams, err := reading.Grams()
-			Expect(err).To(MatchError(ErrWrongMode))
-			Expect(grams).To(Equal(0))
+			Expect(err).To(BeNil())
+			Expect(grams).To(BeNumerically("~", 2492, OuncesToGramsVariation))
 		})
 
 		It("should read 4294g object", func() {
@@ -245,8 +250,8 @@ var _ = Describe("Dymoscale", func() {
 			}))
 
 			grams, err := reading.Grams()
-			Expect(err).To(MatchError(ErrWrongMode))
-			Expect(grams).To(Equal(0))
+			Expect(err).To(BeNil())
+			Expect(grams).To(BeNumerically("~", 4294, OuncesToGramsVariation))
 		})
 	})
 })

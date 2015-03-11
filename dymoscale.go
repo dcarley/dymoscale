@@ -4,16 +4,17 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"math"
 
 	"github.com/dcarley/gousb/usb"
 )
 
 const VendorID usb.ID = 0x0922 // Dymo, all devices
+const GramsInOunce = 28.3495231
 
 var (
 	ErrInvalidRead = fmt.Errorf("scale gave invalid reading")
 	ErrNeedsTare   = fmt.Errorf("scale reads negative, please tare")
-	ErrWrongMode   = fmt.Errorf("scale is in ounces mode, please switch to grams")
 )
 
 type Mode int8
@@ -40,7 +41,7 @@ type Measurement struct {
 	AlwaysThree int8      // Don't know what this is but it's always 3
 	Stability   Stability // How accurate the measurement was
 	Mode        Mode      // Grams or Ounces
-	ScaleFactor int8      // WeightMinor*10^n when Mode is Ounces
+	ScaleFactor int8      // Total weight * 10^n
 	WeightMinor uint8     //
 	WeightMajor uint8     // Overflow for WeightMinor, n*256
 }
@@ -55,10 +56,6 @@ func (m *Measurement) errors() error {
 		return ErrNeedsTare
 	}
 
-	if m.Mode != Grams && m.Stability != NoWeight {
-		return ErrWrongMode
-	}
-
 	return nil
 }
 
@@ -68,8 +65,15 @@ func (m *Measurement) Grams() (int, error) {
 		return 0, err
 	}
 
-	grams := int(m.WeightMinor) + (int(m.WeightMajor) * 256)
-	return grams, nil
+	var weight float64
+	weight = float64(m.WeightMinor) + (float64(m.WeightMajor) * 256.0)
+	weight = weight * math.Pow10(int(m.ScaleFactor))
+
+	if m.Mode == Ounces {
+		weight = weight * GramsInOunce
+	}
+
+	return int(weight), nil
 }
 
 // ReadMeasurement obtains a Measurement from an io.Reader.
