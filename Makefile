@@ -1,4 +1,4 @@
-.PHONY: all godep test build darwin
+.PHONY: all godep test build darwin docker
 
 all: test build
 
@@ -15,3 +15,13 @@ build: godep
 darwin: export CGO_CFLAGS = -I/opt/boxen/homebrew/include
 darwin: export CGO_LDFLAGS = -L/opt/boxen/homebrew/lib
 darwin: all
+
+docker:
+	docker build --force-rm -qt dymoscale .
+	docker run --rm -ti \
+		--privileged \
+		-v /dev/bus/usb:/dev/bus/usb \
+		-v ${GOPATH}:/gopath \
+		-v ${GOPATH}/bin.linux:/gopath/bin \
+		-w /gopath/src/$(shell go list) \
+		dymoscale
