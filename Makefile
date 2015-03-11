@@ -1,4 +1,4 @@
-.PHONY: all godep test build darwin docker
+.PHONY: all godep test build arm darwin docker
 
 all: test build
 
@@ -15,6 +15,13 @@ build: godep
 darwin: export CGO_CFLAGS = -I/opt/boxen/homebrew/include
 darwin: export CGO_LDFLAGS = -L/opt/boxen/homebrew/lib
 darwin: all
+
+arm: export CC = arm-linux-gnueabihf-gcc
+arm: export CXX = arm-linux-gnueabihf-g++
+arm: export CGO_ENABLED = 1
+arm: export GOARCH = arm
+arm: export GOARM = 7
+arm: build
 
 docker:
 	docker build --force-rm -qt dymoscale .
