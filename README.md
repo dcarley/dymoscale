@@ -1,5 +1,7 @@
 # dymoscale
 
+[![GoDoc](https://godoc.org/github.com/dcarley/dymoscale?status.svg)](http://godoc.org/github.com/dcarley/dymoscale) [![Build Status](https://travis-ci.org/dcarley/dymoscale.svg?branch=master)](https://travis-ci.org/dcarley/dymoscale)
+
 Go library for reading Dymo USB postal scales.
 
 You can buy them relatively cheap from Ebay.
