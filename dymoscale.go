@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/dcarley/gousb/usb"
+	"github.com/yukkeorg/gousb/usb"
 )
 
 const VendorID usb.ID = 0x0922 // Dymo, all devices

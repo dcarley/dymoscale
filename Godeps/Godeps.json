@@ -3,11 +3,6 @@
 	"GoVersion": "go1.4.1",
 	"Deps": [
 		{
-			"ImportPath": "github.com/dcarley/gousb/usb",
-			"Comment": "yokujin_fork",
-			"Rev": "23810395649be2a74c850e8a06ee397128d77f86"
-		},
-		{
 			"ImportPath": "github.com/onsi/ginkgo",
 			"Comment": "v1.1.0-40-ge573630",
 			"Rev": "e57363034d6f4d61cd9ef0b6917f69ad03977914"
@@ -16,6 +11,10 @@
 			"ImportPath": "github.com/onsi/gomega",
 			"Comment": "v1.0-29-g3eef9f9",
 			"Rev": "3eef9f9f484e930d7748746b190d63fb2958c833"
+		},
+		{
+			"ImportPath": "github.com/yukkeorg/gousb/usb",
+			"Rev": "a15ecd7f591a962a2e94cb7a79d93c02ee85746e"
 		}
 	]
 }
