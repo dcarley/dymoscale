@@ -4,8 +4,8 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/dcarley/gousb/usb",
-			"Comment": "yokujin_fork",
-			"Rev": "23810395649be2a74c850e8a06ee397128d77f86"
+			"Comment": "detach_and_darwin_support",
+			"Rev": "ecb7d5345221dad0645aa4d91e947f5173773ac5"
 		},
 		{
 			"ImportPath": "github.com/onsi/ginkgo",
