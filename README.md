@@ -12,12 +12,16 @@ Tested with a Dymo M5, but will probably work with other models too.
 
 ### darwin/amd64
 
-To test and build on Darwin. Although it seems that libusb reports an
-`access denied` error:
+To test and build on Darwin.
 ```
 brew install libusb
 make darwin
 ```
+
+You may get an `access denied` error though when using the binary/library
+because of [this problem][libusb_osx] with OS X attaching its HID driver.
+
+[libusb_osx]: https://github.com/libusb/libusb/wiki/FAQ#How_can_I_run_libusb_applications_under_Mac_OS_X_if_there_is_already_a_kernel_extension_installed_for_the_device)
 
 ### linux/amd64
 
