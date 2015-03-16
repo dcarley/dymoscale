@@ -14,16 +14,37 @@ const OuncesToGramsVariation = 2
 
 var _ = Describe("Dymoscale", func() {
 	Describe("Measurement", func() {
-		It("should error on short read", func() {
-			buf := bytes.NewBuffer([]byte{1, 2})
+		Describe("errors", func() {
+			It("should error on short read", func() {
+				buf := bytes.NewBuffer([]byte{1, 2})
 
-			reading, err := ReadMeasurement(buf)
-			Expect(err).To(MatchError("unexpected EOF"))
-			Expect(reading).To(Equal(&Measurement{0, 0, 0, 0, 0, 0}))
+				reading, err := ReadMeasurement(buf)
+				Expect(err).To(MatchError("unexpected EOF"))
+				Expect(reading).To(Equal(&Measurement{0, 0, 0, 0, 0, 0}))
 
-			grams, err := reading.Grams()
-			Expect(err).To(MatchError(ErrInvalidRead))
-			Expect(grams).To(Equal(0))
+				grams, err := reading.Grams()
+				Expect(err).To(MatchError(ErrInvalidRead))
+				Expect(grams).To(Equal(0))
+			})
+
+			It("should error (needs tare) on negative weight", func() {
+				buf := bytes.NewBuffer([]byte{3, 5, 11, 255, 0, 0, 0, 0})
+
+				reading, err := ReadMeasurement(buf)
+				Expect(err).To(BeNil())
+				Expect(reading).To(Equal(&Measurement{
+					AlwaysThree: 3,
+					Stability:   NeedsTare,
+					Mode:        Ounces,
+					ScaleFactor: -1,
+					WeightMinor: 0,
+					WeightMajor: 0,
+				}))
+
+				grams, err := reading.Grams()
+				Expect(err).To(MatchError(ErrNeedsTare))
+				Expect(grams).To(Equal(0))
+			})
 		})
 
 		It("should read zero weight", func() {
@@ -42,25 +63,6 @@ var _ = Describe("Dymoscale", func() {
 
 			grams, err := reading.Grams()
 			Expect(err).To(BeNil())
-			Expect(grams).To(Equal(0))
-		})
-
-		It("should read negative weight (needs tare)", func() {
-			buf := bytes.NewBuffer([]byte{3, 5, 11, 255, 0, 0, 0, 0})
-
-			reading, err := ReadMeasurement(buf)
-			Expect(err).To(BeNil())
-			Expect(reading).To(Equal(&Measurement{
-				AlwaysThree: 3,
-				Stability:   NeedsTare,
-				Mode:        Ounces,
-				ScaleFactor: -1,
-				WeightMinor: 0,
-				WeightMajor: 0,
-			}))
-
-			grams, err := reading.Grams()
-			Expect(err).To(MatchError(ErrNeedsTare))
 			Expect(grams).To(Equal(0))
 		})
 
