@@ -39,3 +39,10 @@ To test and cross-compile to ARM, which can run on a Raspberry Pi:
 make docker
 make test arm
 ```
+
+## Credit
+
+Goes to this article for doing all the hard work of reverse engineering the
+binary protocol:
+
+- [Steven T Snyder - Reading a Dymo USB scale using Python](http://steventsnyder.com/reading-a-dymo-usb-scale-using-python/)
